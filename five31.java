@@ -139,9 +139,9 @@ public class Five31 {
 			}
 			System.out.println("");
 		}
-  exit();
-  
-  public static int roundTo5(double t) {
+  		exit();
+	}
+  	public static int roundTo5(double t) {
 		return (int) (5*(Math.round(t/5)));
 	}
 	
