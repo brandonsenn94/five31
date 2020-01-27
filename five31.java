@@ -6,11 +6,6 @@ import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 /**
  * @author Brandon
  *
@@ -23,6 +18,7 @@ public class Five31 {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException {
+		//initialize 1RM variables. Also generate arrays that are constant every month.
 		double squat = 0, bench = 0, dl = 0, ohp = 0;
 		double week1[] = {.65, .75, .85};
 		double week2[] = {.70, .80, .90};
@@ -31,7 +27,8 @@ public class Five31 {
 		welcome();
 		Scanner input = new Scanner(System.in);
 		exercisee a = new exercisee();
-		//get user input and validate user responses...
+		//get user input and validate user responses.
+		//validation by ensuring that user can't enter less than 45 lbs.
 		System.out.println("What's your name?");
 		String b = input.next();
 		a.setName(b);
@@ -110,12 +107,25 @@ public class Five31 {
 		System.out.println("Week 3 (1x5, 1x3, 1x1) at 75%, 85%, 95%");
 		System.out.println("Week 4: Deload(Optional) 3x5 at 40%, 50%, 60%");
 		System.out.println("");
-		//Arrays make for excellent loop controls.
-		//		
+		//need to have this for generating data for year. 
+		String months[] = {"January", "February", "March", "April", "May", "June", "July", "August",
+				"September", "October", "November", "December"
+		};
+		//create buffered writer obj with filewriter object. allows use of newLine that buffered writer has.
 		String csvFile = "/Users/Brandon/Desktop/results.csv";
-		//BufferedWriter bw = new BufferedWriter(writer);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile));
-		bw.write("January");
+		/* This loop can be confusing
+		 * the most confusing part is following it.
+		 * var i is used for months
+		 * if you follow i, at the bottom, this program automatically adjusts training maxes by 5 per week.
+		 * conservative, but fair. this will stop people from jumping into heavier workloads for no reason and potentially injuring themselves.
+		 * var l is used for weeks
+		 * var j is used for tracking exercise
+		 * var k is used for generating workout sets.
+		 */
+		//Generates data for an entire year. 4 for loops. days + weeks + months + sets.
+		for(int i = 0; i < 12; i++) {
+		bw.write(months[i]);
 		bw.write(",");
 		bw.write("Exercise");
 		bw.write(",");
@@ -126,143 +136,171 @@ public class Five31 {
 		bw.write("Set 3");
 		bw.newLine();
 		//week
-		for(int l = 0; l < 4; l++) {
-			System.out.println("Week " + (l+1) + ":");
-			System.out.println("");
-			if(l == 3) {
-				System.out.println("Easy week");
-			}
-			//exercise
-			for(int j = 0; j < 4; j++) {
-				System.out.println((j+1) + " day: ("+exerciseList[j]+")");
-				bw.write(",");
-				bw.write(exerciseList[j]);
-				bw.write(",");
+			for(int l = 0; l < 4; l++) {
+				bw.write("Week " + Integer.toString(l+1));
+				System.out.println("Week " + (l+1) + ":");
 				System.out.println("");
-				System.out.println("Proposed sets: ");
-				//day
-				for(int k = 0; k < 3; k++) {
-					if(l == 0) {
-						switch(j) {
-						case 0:
-							//bw.write(",");
-							//bw.write(exerciseList[0]);
-							//bw.write(",");
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 1:
-							//bw.write(",");
-							//bw.write(exerciseList[1]);
-							//bw.write(",");
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 2:
-							//bw.write(",");
-							//bw.write(exerciseList[2]);
-							//bw.write(",");
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 3:
-							//bw.write(",");
-							//bw.write(exerciseList[3]);
-							//bw.write(",");
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							bw.newLine();
-							break;
-						}
-					System.out.println(roundTo5((week1[k] * trainingMax[j])));
-					}
-					else if(l == 1) {
-						switch(j) {
-						case 0:
-							//bw.write(exerciseList[0]);
-							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 1:
-							//bw.write(exerciseList[1]);
-							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 2:
-							//bw.write(exerciseList[2]);
-							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 3:
-							//bw.write(exerciseList[3]);
-							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
-							bw.write(",");
-							bw.newLine();
-							break;
-						}
-					System.out.println(roundTo5((week2[k] * trainingMax[j])));
-					}
-					else if(l == 2) {
-						switch(j) {
-						case 0:
-							//bw.write(exerciseList[0]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 1:
-							//bw.write(exerciseList[1]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 2:
-							//bw.write(exerciseList[2]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 3:
-							//bw.write(exerciseList[3]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							bw.newLine();
-							break;
-						}
-					System.out.println(roundTo5((week3[k] * trainingMax[j])));
-					}
-					else if(l == 3){
-						switch(j) {
-						case 0:
-							//bw.write(exerciseList[0]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 1:
-							//bw.write(exerciseList[1]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 2:
-							//bw.write(exerciseList[2]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							bw.write(",");
-							break;
-						case 3:
-							//bw.write(exerciseList[3]);
-							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
-							//bw.newLine();
-							bw.write(",");
-							bw.newLine();
-							break;
-						}
-					System.out.println(roundTo5((week4[k] * trainingMax[j])));
-					}
-					//bw.newLine();
+				if(l == 3) {
+					System.out.println("Easy week");
 				}
+				//
+				for(int j = 0; j < 4; j++) {
+					System.out.println((j+1) + " day: ("+exerciseList[j]+")");
+					//bw.write("Week " + Integer.toString(l+1));
+					bw.write(",");
+					bw.write(exerciseList[j]);
+					bw.write(",");
+					System.out.println("");
+					System.out.println("Proposed sets: ");
+					//Generates weights for the exercises
+					for(int k = 0; k < 3; k++) {
+						if(l == 0) {
+							switch(j) {
+							case 0:
+								bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 1:
+								bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 2:
+								bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 3:
+								bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							}
+						System.out.println(roundTo5((week1[k] * trainingMax[j])));
+						}
+						else if(l == 1) {
+							switch(j) {
+							case 0:
+								bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 1:
+								bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 2:
+								bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 3:
+								bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							}
+						System.out.println(roundTo5((week2[k] * trainingMax[j])));
+						}
+						else if(l == 2) {
+							switch(j) {
+							case 0:
+								bw.write(Integer.toString(roundTo5(week3[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 1:
+								bw.write(Integer.toString(roundTo5(week3[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 2:
+								bw.write(Integer.toString(roundTo5(week3[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 3:
+								bw.write(Integer.toString(roundTo5(week3[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							}
+						System.out.println(roundTo5((week3[k] * trainingMax[j])));
+						}
+						else if(l == 3){
+							switch(j) {
+							case 0:
+								bw.write(Integer.toString(roundTo5(week4[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 1:
+								bw.write(Integer.toString(roundTo5(week4[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 2:
+								bw.write(Integer.toString(roundTo5(week4[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							case 3:
+								bw.write(Integer.toString(roundTo5(week4[k] * trainingMax[j])));
+								bw.write(",");
+								if(k == 2) {
+									bw.newLine();
+								}
+								break;
+							}
+						System.out.println(roundTo5((week4[k] * trainingMax[j])));
+						}
+						//bw.newLine();
+					}
+				}
+				System.out.println("");
+				bw.newLine();
 			}
-			System.out.println("");
+			for(int c = 0; c < 4; c++) {
+				trainingMax[c] = trainingMax[c] + 5;
+			}
 		}
 		bw.close();
 		exit();		
 	}
+	//this is necessary because there is no such thing as a 2.3 lb weight at the gym.
+	//all weight numbers are integers, at least in my gym.
 	
 	public static int roundTo5(double t) {
 		return (int) (5*(Math.round(t/5)));
@@ -278,7 +316,7 @@ public class Five31 {
 	}
 	
 	public static void exit() {
-		System.out.println("Copyright 2020, Brandon S.");
+		System.out.println("Thanks for using my program! -Brandon");
 	}
 	
 	
