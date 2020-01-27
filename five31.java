@@ -1,12 +1,16 @@
+/**
+ * 
+ */
 package main;
 import java.util.Scanner;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 /**
  * @author Brandon
  *
@@ -18,7 +22,7 @@ public class Five31 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		double squat = 0, bench = 0, dl = 0, ohp = 0;
 		double week1[] = {.65, .75, .85};
 		double week2[] = {.70, .80, .90};
@@ -32,11 +36,10 @@ public class Five31 {
 		String b = input.next();
 		a.setName(b);
 		System.out.println("Nice to meet you, " + a.getName());
-		//System.out.println("What month is it?");
 		System.out.println("What's your max squat?");
 		while(squat < 45){
 			squat = input.nextDouble();
-			if(squat < 45) {
+			if(squat < 1) {
 				System.out.println("Please input a value greater than 45 lbs.");
 			}
 		}
@@ -56,7 +59,7 @@ public class Five31 {
 		System.out.println("What's your max deadlift?");
 		while(dl < 45) {
 			dl = input.nextDouble();
-			if(dl < 45) {
+			if(dl < 1) {
 				System.out.println("Please input a value greater than 45 lbs.");
 			}
 		}
@@ -66,7 +69,7 @@ public class Five31 {
 		System.out.println("What's your max overhead press?");
 		while(ohp < 45) {
 			ohp = input.nextDouble();
-			if(ohp < 45) {
+			if(ohp < 1) {
 				System.out.println("Please input a value greater than 45 lbs.");
 			}
 		}
@@ -107,8 +110,21 @@ public class Five31 {
 		System.out.println("Week 3 (1x5, 1x3, 1x1) at 75%, 85%, 95%");
 		System.out.println("Week 4: Deload(Optional) 3x5 at 40%, 50%, 60%");
 		System.out.println("");
-		//Quintet<String, String, Double, Double, Double> a = 
 		//Arrays make for excellent loop controls.
+		//		
+		String csvFile = "/Users/Brandon/Desktop/results.csv";
+		//BufferedWriter bw = new BufferedWriter(writer);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile));
+		bw.write("January");
+		bw.write(",");
+		bw.write("Exercise");
+		bw.write(",");
+		bw.write("Set 1");
+		bw.write(",");
+		bw.write("Set 2");
+		bw.write(",");
+		bw.write("Set 3");
+		bw.newLine();
 		//week
 		for(int l = 0; l < 4; l++) {
 			System.out.println("Week " + (l+1) + ":");
@@ -118,33 +134,141 @@ public class Five31 {
 			}
 			//exercise
 			for(int j = 0; j < 4; j++) {
-				System.out.println((j+1) + " day: ("+exerciseList[j]+")");	
+				System.out.println((j+1) + " day: ("+exerciseList[j]+")");
+				bw.write(",");
+				bw.write(exerciseList[j]);
+				bw.write(",");
 				System.out.println("");
 				System.out.println("Proposed sets: ");
 				//day
 				for(int k = 0; k < 3; k++) {
 					if(l == 0) {
+						switch(j) {
+						case 0:
+							//bw.write(",");
+							//bw.write(exerciseList[0]);
+							//bw.write(",");
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 1:
+							//bw.write(",");
+							//bw.write(exerciseList[1]);
+							//bw.write(",");
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 2:
+							//bw.write(",");
+							//bw.write(exerciseList[2]);
+							//bw.write(",");
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 3:
+							//bw.write(",");
+							//bw.write(exerciseList[3]);
+							//bw.write(",");
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							bw.newLine();
+							break;
+						}
 					System.out.println(roundTo5((week1[k] * trainingMax[j])));
 					}
 					else if(l == 1) {
+						switch(j) {
+						case 0:
+							//bw.write(exerciseList[0]);
+							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 1:
+							//bw.write(exerciseList[1]);
+							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 2:
+							//bw.write(exerciseList[2]);
+							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 3:
+							//bw.write(exerciseList[3]);
+							bw.write(Integer.toString(roundTo5(week2[k] * trainingMax[j])));
+							bw.write(",");
+							bw.newLine();
+							break;
+						}
 					System.out.println(roundTo5((week2[k] * trainingMax[j])));
 					}
 					else if(l == 2) {
+						switch(j) {
+						case 0:
+							//bw.write(exerciseList[0]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 1:
+							//bw.write(exerciseList[1]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 2:
+							//bw.write(exerciseList[2]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 3:
+							//bw.write(exerciseList[3]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							bw.newLine();
+							break;
+						}
 					System.out.println(roundTo5((week3[k] * trainingMax[j])));
 					}
 					else if(l == 3){
+						switch(j) {
+						case 0:
+							//bw.write(exerciseList[0]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 1:
+							//bw.write(exerciseList[1]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 2:
+							//bw.write(exerciseList[2]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							bw.write(",");
+							break;
+						case 3:
+							//bw.write(exerciseList[3]);
+							bw.write(Integer.toString(roundTo5(week1[k] * trainingMax[j])));
+							//bw.newLine();
+							bw.write(",");
+							bw.newLine();
+							break;
+						}
 					System.out.println(roundTo5((week4[k] * trainingMax[j])));
 					}
+					//bw.newLine();
 				}
 			}
 			System.out.println("");
 		}
-  		exit();
+		bw.close();
+		exit();		
 	}
-  	public static int roundTo5(double t) {
+	
+	public static int roundTo5(double t) {
 		return (int) (5*(Math.round(t/5)));
 	}
 	
+
 	public static void welcome() {
 		System.out.println("*******************************************");
 		System.out.println("*                                         *");
@@ -154,6 +278,8 @@ public class Five31 {
 	}
 	
 	public static void exit() {
-		System.out.println("2020, Brandon S.");
+		System.out.println("Copyright 2020, Brandon S.");
 	}
+	
+	
 }
