@@ -146,7 +146,6 @@ public class Five31 {
 				//
 				for(int j = 0; j < 4; j++) {
 					System.out.println((j+1) + " day: ("+exerciseList[j]+")");
-					//bw.write("Week " + Integer.toString(l+1));
 					bw.write(",");
 					bw.write(exerciseList[j]);
 					bw.write(",");
@@ -286,7 +285,6 @@ public class Five31 {
 							}
 						System.out.println(roundTo5((week4[k] * trainingMax[j])));
 						}
-						//bw.newLine();
 					}
 				}
 				System.out.println("");
